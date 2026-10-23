@@ -18,8 +18,9 @@ const final = BAR + PLATES.reduce((s, p) => s + p.kg * 2, 0);
     <p class="text-xs uppercase tracking-[.3em] text-mute">Carga la barra</p>
     <p class="display mt-2 text-[22vw] leading-none sm:text-[16vw]"><span id="kg" data-final={final}>{final}</span><span class="text-accent">kg</span></p>
   </div>
-  <svg viewBox="-700 -200 1400 400" class="absolute inset-x-0 bottom-[8svh] mx-auto w-[140%] max-w-none -translate-x-[14%] sm:w-full sm:translate-x-0" aria-hidden="true">
-    <rect x="-700" y="-10" width="1400" height="20" rx="6" fill="#77756f" />
+  <!-- El viewBox abarca la barra completa con todos los discos, así cabe entera también en móvil -->
+  <svg viewBox="-660 -170 1320 340" class="absolute inset-x-0 bottom-[12svh] mx-auto w-full max-w-7xl px-2" aria-hidden="true">
+    <rect x="-660" y="-10" width="1320" height="20" rx="6" fill="#77756f" />
     <rect x="-440" y="-28" width="24" height="56" rx="4" fill="#9a978f" />
     <rect x="416" y="-28" width="24" height="56" rx="4" fill="#9a978f" />
     {placed.map((p, i) => (

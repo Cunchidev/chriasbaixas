@@ -77,14 +77,37 @@ const nav = [
           <Logo size={40} text={false} />
           <span class="display hidden text-xl sm:inline">{CLUB.short}</span>
         </a>
-        <ul class="flex gap-3 overflow-x-auto text-[13px] font-medium sm:gap-7 sm:text-sm">
+        <ul class="hidden gap-7 text-sm font-medium md:flex">
           {nav.map((n) => (
-            <li class="shrink-0"><a href={href(n.href)} class:list={["transition hover:text-accent", path.includes(n.href) && "text-accent"]}>{n.label}</a></li>
+            <li><a href={href(n.href)} class:list={["transition hover:text-accent", path.includes(n.href) && "text-accent"]}>{n.label}</a></li>
           ))}
         </ul>
+        <!-- Menú móvil: <details> funciona sin JavaScript -->
+        <details id="mobile-nav" class="group md:hidden">
+          <summary class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full border border-ink-3 [&::-webkit-details-marker]:hidden" aria-label="Abrir menú">
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path class="group-open:hidden" d="M4 7h16M4 12h16M4 17h16" />
+              <path class="hidden group-open:block" d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </summary>
+          <ul class="absolute inset-x-0 top-full border-b border-ink-3 bg-ink px-4 pb-6 pt-2">
+            {nav.map((n) => (
+              <li class="border-b border-ink-3 last:border-0">
+                <a href={href(n.href)} class:list={["display block py-4 text-4xl", path.includes(n.href) ? "text-accent" : "hover:text-accent"]}>{n.label}</a>
+              </li>
+            ))}
+          </ul>
+        </details>
       </nav>
     </header>
     <main><slot /></main>
+    <script>
+      // Cierra el menú móvil al tocar fuera
+      const menu = document.getElementById("mobile-nav") as HTMLDetailsElement | null;
+      document.addEventListener("click", (e) => {
+        if (menu?.open && !menu.contains(e.target as Node)) menu.open = false;
+      });
+    </script>
     <footer class="border-t border-ink-3 px-4 py-14 text-sm text-mute sm:px-8">
       <div class="mx-auto grid max-w-7xl gap-10 md:grid-cols-[auto_1fr]">
         <div class="flex items-center gap-4">
