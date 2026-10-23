@@ -1,0 +1,18 @@
+[
+  { "date": "2026-10-24", "endDate": "2026-10-25", "name": "XV Campeonato de España Sub-15", "place": "Oviedo (Asturias)", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2026-10-27", "endDate": "2026-11-08", "name": "Campeonato del Mundo Absoluto", "place": "Chengdú (China)", "level": "internacional", "url": "https://iwf.sport/" },
+  { "date": "2026-10-31", "name": "Campeonato Gallego de Clubes · 4ª Fase Liga Gallega", "place": "A Coruña", "level": "autonómico", "url": "https://halterofilia.org/calendario/" },
+  { "date": "2026-11-01", "name": "IV Jornada de Liga Nacional de Clubes / Playoff", "place": "Varias sedes", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2026-11-14", "endDate": "2026-11-15", "name": "LV Campeonato de España Júnior", "place": "Ourense (Galicia)", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2026-11-28", "endDate": "2026-11-29", "name": "Copa del Rey y de la Reina Iberdrola", "place": "Zarautz (Euskadi)", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2027-02-13", "name": "XIX Copa de Clubes Sub-16 y Sub-18", "place": "Madrid", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2027-02-14", "name": "Jornada Nacional de Técnica", "place": "Madrid", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2027-02-21", "name": "I Jornada de Liga Nacional", "place": "Varias sedes", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2027-03-06", "name": "Copa de España Iberdrola (Sub-15, Sub-17 y Absoluta)", "place": "Valdepeñas (Castilla-La Mancha)", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2027-04-11", "endDate": "2027-04-18", "name": "Campeonato de Europa Absoluto", "place": "Batumi (Georgia)", "level": "internacional", "url": "https://ewf.sport/" },
+  { "date": "2027-04-17", "name": "Campeonato de España Universitario", "place": "Por determinar", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2027-04-25", "name": "II Jornada de Liga Nacional", "place": "Varias sedes", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2027-05-08", "endDate": "2027-05-09", "name": "Campeonato de España Sub-17 / CESA", "place": "Por determinar", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2027-06-05", "endDate": "2027-06-06", "name": "Campeonato de España Absoluto", "place": "Por determinar", "level": "nacional", "url": "https://www.fedehalter.org/" },
+  { "date": "2027-06-20", "name": "III Jornada de Liga Nacional", "place": "Varias sedes", "level": "nacional", "url": "https://www.fedehalter.org/" }
+]

@@ -1,0 +1,38 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import SinclairCalc from "../components/SinclairCalc";
+import PlateCalc from "../components/PlateCalc";
+import PercentTable from "../components/PercentTable";
+import { href } from "../lib/url";
+
+const tools = [
+  { id: "sinclair", t: "Sinclair", d: "Convierte tu total en una puntuación comparable con atletas de cualquier peso corporal. Sirve para saber quién es «más fuerte» sin importar la categoría." },
+  { id: "discos", t: "Discos", d: "Escribe el peso que quieres levantar y te dice qué discos poner en cada lado de la barra, con los colores oficiales." },
+  { id: "porcentajes", t: "Porcentajes", d: "Mete tus máximos y te da los kilos para cada porcentaje del entrenamiento: «5 series al 75 %» sin hacer cuentas." },
+];
+---
+<Base title="Calculadoras" description="Calculadoras de halterofilia: Sinclair, discos y porcentajes.">
+  <PageHead kicker="Herramientas para halterófilos" title="Calculadoras" lead="Las cuentas que haces en la nave, resueltas en un segundo desde el móvil. Para los puntos élite de la RFEH tienes su propia página." />
+  <section class="px-4 pb-10 sm:px-8">
+    <div class="mx-auto grid max-w-7xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {tools.map((t) => (
+        <a href={`#${t.id}`} class="group rounded-2xl border border-ink-3 p-5 transition hover:border-accent">
+          <p class="display text-3xl group-hover:text-accent">{t.t} ↓</p>
+          <p class="mt-2 text-sm text-mute">{t.d}</p>
+        </a>
+      ))}
+      <a href={href("/puntos")} class="group rounded-2xl bg-accent p-5 text-ink transition hover:-translate-y-1">
+        <p class="display text-3xl">Puntos élite →</p>
+        <p class="mt-2 text-sm text-ink/75">Tabla oficial de la RFEH: tus puntos y cuántos kilos te faltan para el siguiente nivel.</p>
+      </a>
+    </div>
+  </section>
+  <section class="px-4 pb-24 sm:px-8">
+    <div class="mx-auto grid max-w-7xl gap-6 lg:grid-cols-2">
+      <div id="sinclair" class="scroll-mt-24"><SinclairCalc client:visible /></div>
+      <div id="discos" class="scroll-mt-24"><PlateCalc client:visible /></div>
+      <div id="porcentajes" class="scroll-mt-24 lg:col-span-2"><PercentTable client:visible /></div>
+    </div>
+  </section>
+</Base>

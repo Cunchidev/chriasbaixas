@@ -1,0 +1,24 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import EventList from "../components/EventList.astro";
+import Countdown from "../components/Countdown";
+import events from "../data/events.json";
+import { upcomingEvents } from "../lib/weightlifting";
+// Se filtran al compilar y otra vez en el navegador (ver EventList y Countdown)
+const upcoming = upcomingEvents(events);
+---
+<Base title="Calendario" description="Próximas competiciones y eventos del club.">
+  <PageHead kicker="Temporada" title="Calendario" lead="Competiciones oficiales de la temporada: Galicia, España y el circuito internacional." />
+  <section class="px-4 pb-24 sm:px-8">
+    <div class="mx-auto max-w-7xl space-y-10">
+      <Countdown client:load events={upcoming} />
+      <EventList events={upcoming} />
+      <p class="text-sm text-mute">
+        Fuentes: <a class="underline hover:text-accent" href="https://www.fedehalter.org/wp-content/uploads/2026/05/5.Calendario-unificado-RFEH-2026-26-05-2026.pdf" target="_blank" rel="noopener">calendario RFEH 2026</a>,
+        <a class="underline hover:text-accent" href="https://www.fedehalter.org/wp-content/uploads/2026/08/1.Calendario-RFEH-unificado-2027-V.0-7-8-2026.pdf" target="_blank" rel="noopener">calendario RFEH 2027 (provisional)</a> y
+        <a class="underline hover:text-accent" href="https://halterofilia.org/calendario/" target="_blank" rel="noopener">calendario de la Federación Gallega</a>. Las sedes y fechas «por determinar» pueden cambiar.
+      </p>
+    </div>
+  </section>
+</Base>

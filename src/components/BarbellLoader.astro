@@ -1,0 +1,61 @@
+---
+// Al entrar en pantalla se cargan los discos en la barra y sube el contador de kg.
+const PLATES = [
+  { kg: 25, fill: "#e3170a", h: 300, w: 44 },
+  { kg: 25, fill: "#e3170a", h: 300, w: 44 },
+  { kg: 20, fill: "#1f5fd6", h: 300, w: 38 },
+  { kg: 15, fill: "#f2c400", h: 300, w: 32 },
+  { kg: 10, fill: "#12a150", h: 300, w: 26 },
+  { kg: 5, fill: "#f3f0ea", h: 210, w: 20 },
+];
+const BAR = 20;
+let x = 0;
+const placed = PLATES.map((p) => { const r = { ...p, x }; x += p.w + 4; return r; });
+const final = BAR + PLATES.reduce((s, p) => s + p.kg * 2, 0);
+---
+<section id="loader" class="relative h-[85svh] min-h-[520px] overflow-hidden border-y border-ink-3 bg-ink">
+  <div class="absolute inset-x-0 top-24 px-4 text-center sm:top-28">
+    <p class="text-xs uppercase tracking-[.3em] text-mute">Carga la barra</p>
+    <p class="display mt-2 text-[22vw] leading-none sm:text-[16vw]"><span id="kg" data-final={final}>{final}</span><span class="text-accent">kg</span></p>
+  </div>
+  <svg viewBox="-700 -200 1400 400" class="absolute inset-x-0 bottom-[8svh] mx-auto w-[140%] max-w-none -translate-x-[14%] sm:w-full sm:translate-x-0" aria-hidden="true">
+    <rect x="-700" y="-10" width="1400" height="20" rx="6" fill="#77756f" />
+    <rect x="-440" y="-28" width="24" height="56" rx="4" fill="#9a978f" />
+    <rect x="416" y="-28" width="24" height="56" rx="4" fill="#9a978f" />
+    {placed.map((p, i) => (
+      <g class="plate" data-kg={p.kg} data-i={i}>
+        <rect x={-412 - p.x - p.w} y={-p.h / 2} width={p.w} height={p.h} rx="6" fill={p.fill} stroke="#0a0a0b" stroke-width="3" class="plate-l" />
+        <rect x={412 + p.x} y={-p.h / 2} width={p.w} height={p.h} rx="6" fill={p.fill} stroke="#0a0a0b" stroke-width="3" class="plate-r" />
+      </g>
+    ))}
+  </svg>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const kgEl = document.getElementById("kg")!;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduce) {
+    const final = Number(kgEl.dataset.final);
+    const counter = { v: 20 };
+    kgEl.textContent = "20";
+    // Se reproduce sola (~2 s) al entrar en pantalla; sin fijar la sección para no alargar el scroll
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: "#loader", start: "top 55%", toggleActions: "play none none reverse" },
+    });
+    const step = 0.3;
+    let sum = 20;
+    gsap.utils.toArray<SVGGElement>(".plate").forEach((g, i) => {
+      sum += Number(g.dataset.kg) * 2;
+      tl.from(g.querySelector(".plate-l"), { x: -900, ease: "back.out(1.4)", duration: 0.6 }, i * step)
+        .from(g.querySelector(".plate-r"), { x: 900, ease: "back.out(1.4)", duration: 0.6 }, i * step)
+        .to(counter, {
+          v: sum, duration: step, ease: "none",
+          onUpdate: () => { kgEl.textContent = String(Math.round(Math.min(counter.v, final))); },
+        }, i * step);
+    });
+  }
+</script>

@@ -1,0 +1,58 @@
+---
+import type { ClubEvent } from "../lib/weightlifting";
+interface Props { events: ClubEvent[]; limit?: number }
+const { events, limit } = Astro.props;
+const fmt = (d: string) => {
+  const date = new Date(`${d}T12:00:00`);
+  return {
+    day: date.toLocaleDateString("es-ES", { day: "2-digit" }),
+    month: date.toLocaleDateString("es-ES", { month: "short" }).replace(".", ""),
+    year: date.getFullYear(),
+  };
+};
+const until = (d?: string) =>
+  d && new Date(`${d}T12:00:00`).toLocaleDateString("es-ES", { day: "numeric", month: "short" }).replace(".", "");
+const inGalicia = (e: ClubEvent) => /galicia|coruña|ourense|vigo|pontevedra|lugo|santiago/i.test(e.place);
+---
+<ol class="divide-y divide-ink-3 border-y border-ink-3" data-events data-limit={limit}>
+  {events.map((e, i) => {
+    const f = fmt(e.date);
+    return (
+      <li data-end={e.endDate ?? e.date} hidden={limit !== undefined && i >= limit} class="group grid grid-cols-[auto_1fr] items-center gap-6 py-6 transition hover:bg-ink-2 sm:grid-cols-[auto_1fr_auto] sm:px-4">
+        <div class="w-20 text-center">
+          <p class="display text-5xl leading-none group-hover:text-accent">{f.day}</p>
+          <p class="text-xs uppercase tracking-widest text-mute">{f.month} {f.year}</p>
+          {e.endDate && <p class="mt-1 text-[11px] text-mute">hasta {until(e.endDate)}</p>}
+        </div>
+        <div>
+          <p class="display text-2xl sm:text-3xl">{e.name}</p>
+          <p class="text-sm text-mute">{e.place}</p>
+        </div>
+        <div class="col-start-2 flex flex-wrap items-center gap-3 sm:col-start-auto">
+          {inGalicia(e) && <span class="rounded-full bg-accent px-3 py-1 text-xs font-semibold uppercase tracking-widest text-ink">Galicia</span>}
+          <span class="rounded-full border border-ink-3 px-3 py-1 text-xs uppercase tracking-widest">{e.level}</span>
+          {e.url && <a href={e.url} target="_blank" rel="noopener" class="text-sm underline hover:text-accent">Info</a>}
+        </div>
+      </li>
+    );
+  })}
+</ol>
+<p data-events-empty hidden class="py-6 text-mute">No hay eventos programados ahora mismo.</p>
+
+<script>
+  // La web es estática: los eventos pasados se ocultan en el navegador según la fecha de hoy,
+  // así no hace falta volver a publicar para que desaparezcan.
+  const today = new Date().toLocaleDateString("sv-SE"); // AAAA-MM-DD en hora local
+  document.querySelectorAll<HTMLOListElement>("[data-events]").forEach((list) => {
+    const limit = Number(list.dataset.limit) || Infinity;
+    let shown = 0;
+    list.querySelectorAll<HTMLLIElement>("li[data-end]").forEach((li) => {
+      const visible = li.dataset.end! >= today && shown < limit;
+      li.hidden = !visible;
+      if (visible) shown++;
+    });
+    const empty = list.nextElementSibling as HTMLElement | null;
+    list.hidden = shown === 0;
+    if (empty?.matches("[data-events-empty]")) empty.hidden = shown > 0;
+  });
+</script>

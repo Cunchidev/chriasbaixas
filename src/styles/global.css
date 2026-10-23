@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0a0a0b;
+  --color-ink-2: #141416;
+  --color-ink-3: #1f1f23;
+  --color-chalk: #f3f0ea;
+  --color-mute: #9a978f;
+  --color-red: #e3170a;
+  --color-accent: #ffd100;
+  --color-blue: #1f5fd6;
+  --color-yellow: #f2c400;
+  --color-green: #12a150;
+  --font-display: "Anton", "Impact", sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+html { background: var(--color-ink); color: var(--color-chalk); scroll-behavior: smooth; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+
+/* Textura de magnesio */
+.chalk::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.display { font-family: var(--font-display); text-transform: uppercase; letter-spacing: -.01em; line-height: .88; }
+.outline-text { -webkit-text-stroke: 1.5px var(--color-chalk); color: transparent; }
+
+.marquee { display: flex; width: max-content; animation: marquee 30s linear infinite; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+.field { background: var(--color-ink-2); border: 1px solid var(--color-ink-3); border-radius: .5rem; padding: .65rem .8rem; width: 100%; color: var(--color-chalk); font-variant-numeric: tabular-nums; }
+.field:focus { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+.seg { display: inline-flex; background: var(--color-ink-2); border: 1px solid var(--color-ink-3); border-radius: 999px; padding: 3px; gap: 2px; flex-wrap: wrap; }
+.seg button { padding: .4rem .9rem; border-radius: 999px; font-size: .85rem; color: var(--color-mute); }
+.seg button[aria-pressed="true"] { background: var(--color-chalk); color: var(--color-ink); font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee { animation: none; }
+  html { scroll-behavior: auto; }
+}

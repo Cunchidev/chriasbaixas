@@ -1,0 +1,39 @@
+{
+  "source": "Real Federación Española de Halterofilia — Tablas de puntos élite (12-01-2026)",
+  "validFrom": "2026-08-01",
+  "urls": {
+    "F": "https://www.fedehalter.org/wp-content/uploads/2026/01/1.Tabla-elite-femenina-12-1-2026.pdf",
+    "M": "https://www.fedehalter.org/wp-content/uploads/2026/01/1.Tabla-elite-masculina-12-1-2026.pdf"
+  },
+  "note": "100 puntos élite = total de referencia de la categoría. Puntos = total / referencia × 100.",
+  "categories": {
+    "F": [
+      { "cat": "41",  "max": 41,   "ref100": 183, "groups": ["sub15"] },
+      { "cat": "45",  "max": 45,   "ref100": 191, "groups": ["sub15", "sub17"] },
+      { "cat": "49",  "max": 49,   "ref100": 203, "groups": ["sub15", "sub17", "abs"] },
+      { "cat": "53",  "max": 53,   "ref100": 215, "groups": ["sub15", "sub17", "abs", "jjoo"] },
+      { "cat": "57",  "max": 57,   "ref100": 227, "groups": ["sub15", "sub17", "abs"] },
+      { "cat": "61",  "max": 61,   "ref100": 237, "groups": ["sub15", "sub17", "abs", "jjoo"] },
+      { "cat": "69",  "max": 69,   "ref100": 257, "groups": ["sub15", "sub17", "abs", "jjoo"] },
+      { "cat": "+69", "max": null, "ref100": 320, "groups": ["sub15"] },
+      { "cat": "77",  "max": 77,   "ref100": 274, "groups": ["sub17", "abs", "jjoo"] },
+      { "cat": "+77", "max": null, "ref100": 320, "groups": ["sub17"] },
+      { "cat": "86",  "max": 86,   "ref100": 293, "groups": ["abs", "jjoo"] },
+      { "cat": "+86", "max": null, "ref100": 320, "groups": ["abs", "jjoo"] }
+    ],
+    "M": [
+      { "cat": "51",   "max": 51,   "ref100": 283, "groups": ["sub15"] },
+      { "cat": "55",   "max": 55,   "ref100": 293, "groups": ["sub15", "sub17"] },
+      { "cat": "60",   "max": 60,   "ref100": 308, "groups": ["sub15", "sub17", "abs"] },
+      { "cat": "65",   "max": 65,   "ref100": 324, "groups": ["sub15", "sub17", "abs", "jjoo"] },
+      { "cat": "70",   "max": 70,   "ref100": 339, "groups": ["sub15", "sub17", "abs"] },
+      { "cat": "75",   "max": 75,   "ref100": 354, "groups": ["sub15", "sub17", "abs", "jjoo"] },
+      { "cat": "85",   "max": 85,   "ref100": 378, "groups": ["sub15", "sub17", "abs", "jjoo"] },
+      { "cat": "+85",  "max": null, "ref100": 453, "groups": ["sub15"] },
+      { "cat": "95",   "max": 95,   "ref100": 399, "groups": ["sub17", "abs", "jjoo"] },
+      { "cat": "+95",  "max": null, "ref100": 453, "groups": ["sub17"] },
+      { "cat": "110",  "max": 110,  "ref100": 426, "groups": ["abs", "jjoo"] },
+      { "cat": "+110", "max": null, "ref100": 453, "groups": ["abs", "jjoo"] }
+    ]
+  }
+}

@@ -1,0 +1,205 @@
+---
+import Base from "../layouts/Base.astro";
+import BarbellLoader from "../components/BarbellLoader.astro";
+import EventList from "../components/EventList.astro";
+import Logo from "../components/Logo.astro";
+import Countdown from "../components/Countdown";
+import { CLUB, FEDERATIONS } from "../config/club";
+import events from "../data/events.json";
+import { upcomingEvents } from "../lib/weightlifting";
+import { href } from "../lib/url";
+
+// Se filtran al compilar y otra vez en el navegador (ver EventList y Countdown)
+const upcoming = upcomingEvents(events);
+const words = ["Arrancada", "Dos tiempos", "Técnica", "Fuerza", "Rías Baixas", "Comunidad"];
+const facts = [
+  { value: 2, label: "Movimientos olímpicos" },
+  { value: 6, label: "Intentos por competición" },
+  { value: 1896, label: "Olímpica desde" },
+  { value: 8, label: "Categorías por sexo" },
+];
+const lifts = [
+  { n: "01", t: "Arrancada", d: "La barra va del suelo a brazos extendidos sobre la cabeza en un único movimiento. Velocidad, movilidad y precisión." },
+  { n: "02", t: "Dos tiempos", d: "Primero la cargada hasta los hombros; después el envión por encima de la cabeza. El movimiento donde más kilos se mueven." },
+  { n: "03", t: "Total", d: "Mejor arrancada + mejor dos tiempos. Es lo que decide el podio, los puntos élite y el Sinclair." },
+];
+const hasSchedule = CLUB.schedule.some((s) => s.hours);
+---
+<Base>
+  <!-- HERO -->
+  <section class="chalk relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-4 pb-10 pt-28 sm:px-8">
+    <div class="pointer-events-none absolute -right-[10vw] top-[10vh] h-[70vw] w-[70vw] rounded-full bg-accent/15 blur-[120px] sm:h-[45vw] sm:w-[45vw]"></div>
+    <div id="hero-logo" class="pointer-events-none absolute -right-[18vw] top-[9vh] w-[60vw] opacity-35 sm:-right-[6vw] sm:opacity-90 sm:top-[16vh] sm:w-[38vw] lg:w-[30rem]">
+      <Logo size={1000} class="h-auto w-full" />
+    </div>
+    <div class="relative mx-auto w-full max-w-7xl">
+      <p class="reveal text-xs uppercase tracking-[.3em] text-accent">{CLUB.name} · {CLUB.region}</p>
+      <h1 class="display mt-4 text-[17vw] sm:text-[11vw] lg:text-[min(10rem,17svh)]">
+        <span class="reveal block">Levanta</span>
+        <span class="reveal outline-text block">lo que creías</span>
+        <span class="reveal block">imposible<span class="text-accent">.</span></span>
+      </h1>
+      <div class="reveal mt-10 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+        <p class="max-w-md text-lg text-mute">Halterofilia olímpica en las Rías Baixas. Técnica, fuerza y un equipo que empuja contigo.</p>
+        <div class="flex flex-wrap gap-3">
+          <a href={CLUB.instagram} target="_blank" rel="noopener" class="rounded-full bg-accent px-6 py-3 font-semibold text-ink transition hover:scale-105">Síguenos en Instagram</a>
+          <a href={href("/puntos")} class="rounded-full border border-chalk/30 px-6 py-3 font-semibold transition hover:bg-chalk hover:text-ink">Calcula tus puntos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="overflow-hidden border-y border-ink-3 bg-accent py-4 text-ink" aria-hidden="true">
+    <div class="marquee">
+      {[...words, ...words, ...words, ...words].map((w) => (
+        <span class="display flex items-center px-6 text-4xl sm:text-5xl">{w}<span class="ml-12">✕</span></span>
+      ))}
+    </div>
+  </div>
+
+  <BarbellLoader />
+
+  <!-- DATOS DEL DEPORTE -->
+  <section class="px-4 py-24 sm:px-8">
+    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-ink-3 bg-ink-3 lg:grid-cols-4">
+      {facts.map((s) => (
+        <div class="bg-ink p-6 sm:p-10">
+          <p class="display text-6xl text-accent sm:text-8xl"><span class="count" data-to={s.value}>{s.value}</span></p>
+          <p class="mt-2 text-sm uppercase tracking-widest text-mute">{s.label}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- LOS MOVIMIENTOS -->
+  <section class="px-4 pb-24 sm:px-8">
+    <div class="mx-auto max-w-7xl">
+      <div class="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+        <h2 class="display text-6xl sm:text-8xl">Qué es la<br /><span class="outline-text">halterofilia</span></h2>
+        <a href={href("/halterofilia")} class="underline underline-offset-4 hover:text-accent">Reglas, categorías y glosario →</a>
+      </div>
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
+        {lifts.map((p) => (
+          <article class="reveal rounded-2xl border border-ink-3 p-7 transition hover:-translate-y-1 hover:border-accent">
+            <p class="display text-accent">{p.n}</p>
+            <h3 class="display mt-6 text-4xl">{p.t}</h3>
+            <p class="mt-3 text-mute">{p.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- LAB -->
+  <section class="relative overflow-hidden bg-accent px-4 py-24 text-ink sm:px-8 [clip-path:polygon(0_4%,100%_0,100%_96%,0_100%)]">
+    <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:items-center">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[.3em]">Herramientas gratis para halterófilos</p>
+        <h2 class="display mt-3 text-6xl sm:text-8xl">Calculadoras</h2>
+        <p class="mt-5 max-w-md text-lg text-ink/75">Mete tu peso, tu total o tus máximos y te damos el resultado al momento: tus puntos élite, tu Sinclair, los discos que tienes que cargar o los kilos de cada serie. Pensadas para usarlas en la nave, desde el móvil.</p>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2">
+        {[
+          { href: "/puntos", t: "Puntos élite", d: "Tus puntos en la tabla oficial RFEH y cuánto te falta" },
+          { href: "/calculadoras#sinclair", t: "Sinclair", d: "Compárate con atletas de cualquier peso" },
+          { href: "/calculadoras#discos", t: "Discos", d: "Qué poner en cada lado de la barra" },
+          { href: "/calculadoras#porcentajes", t: "Porcentajes", d: "Los kilos de cada serie según tu máximo" },
+        ].map((l) => (
+          <a href={href(l.href)} class="group rounded-2xl bg-ink p-6 text-chalk transition hover:-translate-y-1">
+            <p class="display text-3xl group-hover:text-accent">{l.t} <span class="inline-block transition group-hover:translate-x-1">→</span></p>
+            <p class="mt-1 text-sm text-mute">{l.d}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTOS -->
+  <section class="px-4 py-24 sm:px-8">
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-10 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+        <h2 class="display text-6xl sm:text-8xl">Próximos<br />eventos</h2>
+        <Countdown client:visible events={upcoming} />
+      </div>
+      <EventList events={upcoming} limit={3} />
+      <a href={href("/calendario")} class="mt-6 inline-block underline underline-offset-4 hover:text-accent">Ver calendario completo →</a>
+    </div>
+  </section>
+
+  <!-- DÓNDE ENTRENAMOS -->
+  <section class="px-4 pb-24 sm:px-8">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="display text-5xl sm:text-7xl">Dónde entrenamos</h2>
+      <div class="mt-8 grid gap-3 md:grid-cols-3">
+        <div class="flex flex-col rounded-2xl border border-ink-3 p-6">
+          <p class="text-xs uppercase tracking-widest text-mute">Cuándo</p>
+          {CLUB.schedule.map((s) => (
+            <>
+              <p class="display mt-3 text-4xl">{s.days}</p>
+              <p class="mt-1 text-sm text-mute tabular-nums">{s.hours || "Horario: consúltanos por Instagram"}</p>
+            </>
+          ))}
+        </div>
+        <a href={CLUB.venue.mapsUrl} target="_blank" rel="noopener" class="group flex flex-col rounded-2xl border border-ink-3 p-6 transition hover:border-accent">
+          <p class="text-xs uppercase tracking-widest text-mute">Dónde</p>
+          <p class="display mt-3 text-4xl group-hover:text-accent">La nave <span class="text-2xl">↗</span></p>
+          <p class="mt-1 text-sm text-mute">{CLUB.venue.address}</p>
+        </a>
+        <a href={CLUB.partner.url} target="_blank" rel="noopener" class="group flex flex-col rounded-2xl bg-accent p-6 text-ink transition hover:-translate-y-1">
+          <p class="text-xs uppercase tracking-widest text-ink/70">Entrenamos en</p>
+          <p class="display mt-3 text-4xl">{CLUB.partner.name} <span class="text-2xl">↗</span></p>
+          <p class="mt-1 text-sm text-ink/75">{CLUB.partner.description}</p>
+        </a>
+      </div>
+      {!hasSchedule && <p class="mt-4 text-sm text-mute">Antes de venir, mándanos un mensaje y te contamos.</p>}
+    </div>
+  </section>
+
+  <!-- FEDERACIONES -->
+  <section class="px-4 pb-24 sm:px-8">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="display text-5xl sm:text-7xl">Federaciones</h2>
+      <div class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {FEDERATIONS.map((f) => (
+          <a href={f.url} target="_blank" rel="noopener" class="group flex flex-col rounded-2xl border border-ink-3 p-6 transition hover:border-accent">
+            <p class="text-xs uppercase tracking-widest text-mute">{f.scope}</p>
+            <p class="display mt-3 text-4xl group-hover:text-accent">{f.short} <span class="text-2xl">↗</span></p>
+            <p class="mt-1 text-sm text-mute">{f.name}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SÍGUENOS -->
+  <section id="contacto" class="chalk relative overflow-hidden bg-accent px-4 py-24 text-ink sm:px-8">
+    <div class="relative mx-auto flex max-w-7xl flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+      <h2 class="display text-[16vw] sm:text-[10vw] lg:text-[8rem]">Sigue la<br />barra</h2>
+      <a href={CLUB.instagram} target="_blank" rel="noopener" class="self-start rounded-full bg-ink px-7 py-4 font-semibold text-chalk transition hover:scale-105 lg:self-auto">{CLUB.instagramHandle} ↗</a>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    gsap.from("#hero-logo", { rotate: -120, scale: 0.6, opacity: 0, duration: 1.6, ease: "power4.out" });
+    gsap.to("#hero-logo", { rotate: 180, ease: "none", scrollTrigger: { trigger: "#hero-logo", start: "top top", end: "bottom top", scrub: true } });
+    gsap.utils.toArray<HTMLElement>(".reveal").forEach((el) => {
+      gsap.from(el, { y: 60, opacity: 0, duration: 1, ease: "power4.out", scrollTrigger: { trigger: el, start: "top 90%" } });
+    });
+    gsap.utils.toArray<HTMLElement>(".count").forEach((el) => {
+      const to = Number(el.dataset.to);
+      const o = { v: 0 };
+      gsap.to(o, {
+        v: to, duration: 1.6, ease: "power2.out",
+        scrollTrigger: { trigger: el, start: "top 85%" },
+        onUpdate: () => { el.textContent = String(Math.round(o.v)); },
+      });
+    });
+  }
+</script>

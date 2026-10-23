@@ -1,0 +1,139 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import { FEDERATIONS } from "../config/club";
+import { AGE_GROUPS, categoriesFor, type Sex } from "../lib/weightlifting";
+import { href } from "../lib/url";
+
+const rules = [
+  { t: "3 + 3 intentos", d: "Cada atleta tiene tres intentos de arrancada y tres de dos tiempos. Cuenta el mejor de cada movimiento." },
+  { t: "La barra solo sube", d: "El peso nunca baja durante la competición. Se pide en múltiplos de 1 kg." },
+  { t: "1 minuto", d: "Es el tiempo para iniciar el intento desde que te llaman. Si encadenas dos intentos seguidos, tienes 2 minutos." },
+  { t: "3 árbitros", d: "Luz blanca = válido, luz roja = nulo. El intento es bueno con dos luces blancas." },
+  { t: "Sin total, sin clasificación", d: "Si fallas los tres intentos de un movimiento, no tienes total en esa competición." },
+  { t: "Desempate", d: "A igualdad de total, gana quien lo consiguió primero." },
+];
+const groups = [
+  { t: "Sub-15", d: "Iniciación a la competición." },
+  { t: "Sub-17", d: "Categoría juvenil." },
+  { t: "Junior", d: "Hasta los 20 años." },
+  { t: "Absoluto", d: "Sin límite de edad." },
+  { t: "Máster", d: "A partir de 35 años, por tramos de edad." },
+];
+const glossary = [
+  ["Arrancada", "Snatch. De suelo a brazos extendidos sobre la cabeza en un solo movimiento."],
+  ["Cargada", "Clean. Llevar la barra del suelo a los hombros, recibiéndola en sentadilla."],
+  ["Envión", "Jerk. Lanzar la barra desde los hombros a brazos extendidos, normalmente en tijera."],
+  ["Tirón", "Fase de extensión explosiva de piernas y cadera que acelera la barra."],
+  ["Recepción", "Momento en el que te metes bajo la barra para recibirla."],
+  ["Total", "Suma de la mejor arrancada y el mejor dos tiempos."],
+  ["Sinclair", "Coeficiente que permite comparar totales entre distintos pesos corporales."],
+  ["Puntos élite", "Puntuación de la RFEH: 100 puntos equivalen al total de referencia de tu categoría."],
+];
+const sexes: { id: Sex; label: string }[] = [{ id: "M", label: "Hombres" }, { id: "F", label: "Mujeres" }];
+---
+<Base title="Halterofilia" description="Qué es la halterofilia: movimientos, reglas, categorías y glosario.">
+  <PageHead kicker="El deporte" title="Halterofilia" lead="Dos movimientos, seis intentos y un objetivo: levantar más que nadie en tu categoría. Deporte olímpico desde Atenas 1896; las mujeres compiten en los Juegos desde Sídney 2000." />
+
+  <section class="px-4 pb-20 sm:px-8">
+    <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-2">
+      <article class="rounded-2xl border border-ink-3 p-7">
+        <p class="display text-accent">01</p>
+        <h2 class="display mt-4 text-5xl">Arrancada</h2>
+        <p class="mt-3 text-mute">La barra va del suelo a brazos extendidos sobre la cabeza en un solo gesto. El atleta tira, se mete debajo en sentadilla profunda y se levanta. Es el movimiento más técnico y rápido del deporte.</p>
+      </article>
+      <article class="rounded-2xl border border-ink-3 p-7">
+        <p class="display text-accent">02</p>
+        <h2 class="display mt-4 text-5xl">Dos tiempos</h2>
+        <p class="mt-3 text-mute">Se hace en dos fases: la <b class="text-chalk">cargada</b> lleva la barra a los hombros y el <b class="text-chalk">envión</b> la sube por encima de la cabeza. Aquí se levantan los pesos más altos, a menudo más del doble del peso corporal.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="bg-accent px-4 py-20 text-ink sm:px-8">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="display text-6xl sm:text-7xl">Cómo se compite</h2>
+      <div class="mt-10 grid gap-px overflow-hidden rounded-2xl bg-ink/15 sm:grid-cols-2 lg:grid-cols-3">
+        {rules.map((r) => (
+          <div class="bg-accent p-6">
+            <h3 class="display text-3xl">{r.t}</h3>
+            <p class="mt-2 text-ink/75">{r.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="px-4 py-20 sm:px-8">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="display text-6xl sm:text-7xl">Categorías de peso</h2>
+      <p class="mt-3 max-w-2xl text-mute">Categorías IWF vigentes desde el 1 de agosto de 2026, las mismas que usa la tabla de puntos élite de la RFEH. Las marcadas en amarillo son las olímpicas de Los Ángeles 2028.</p>
+      <div class="mt-8 grid gap-8 md:grid-cols-2">
+        {sexes.map((s) => {
+          const olympic = new Set(categoriesFor(s.id, "jjoo").map((c) => c.cat));
+          return (
+            <div>
+              <p class="mb-3 text-xs uppercase tracking-[.3em] text-mute">{s.label} · Junior y absoluto</p>
+              <ul class="flex flex-wrap gap-2">
+                {categoriesFor(s.id, "abs").map((c) => (
+                  <li class:list={["display rounded-xl border px-4 py-3 text-2xl", olympic.has(c.cat) ? "border-accent text-accent" : "border-ink-3"]}>{c.cat}<span class="text-sm"> kg</span></li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+      <p class="mt-6 text-sm text-mute">Sub-15 y Sub-17 tienen sus propias categorías: consúltalas en la <a href={href("/puntos")} class="underline hover:text-accent">tabla de puntos élite</a> eligiendo {AGE_GROUPS.slice(0, 2).map((g) => g.label).join(" o ")}.</p>
+
+      <h2 class="display mt-20 text-6xl sm:text-7xl">Grupos de edad</h2>
+      <div class="mt-8 grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        {groups.map((g) => (
+          <div class="rounded-2xl border border-ink-3 p-5">
+            <p class="display text-3xl">{g.t}</p>
+            <p class="mt-1 text-sm text-mute">{g.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="px-4 pb-20 sm:px-8">
+    <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1.4fr]">
+      <div>
+        <h2 class="display text-6xl sm:text-7xl">Por qué<br /><span class="outline-text">halterofilia</span></h2>
+        <ul class="mt-8 space-y-4 text-lg">
+          <li><span class="text-accent">✦</span> Potencia y velocidad que se transfieren a cualquier deporte.</li>
+          <li><span class="text-accent">✦</span> Movilidad y coordinación: no hay arrancada sin ellas.</li>
+          <li><span class="text-accent">✦</span> Para todas las edades: hay competición desde Sub-15 hasta máster.</li>
+          <li><span class="text-accent">✦</span> Progreso medible: cada kilo cuenta y se ve en tus puntos.</li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="display text-6xl sm:text-7xl">Glosario</h2>
+        <dl class="mt-8 divide-y divide-ink-3 border-y border-ink-3">
+          {glossary.map(([t, d]) => (
+            <div class="grid gap-1 py-4 sm:grid-cols-[10rem_1fr]">
+              <dt class="display text-2xl">{t}</dt>
+              <dd class="text-mute">{d}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-4 pb-24 sm:px-8">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="display text-5xl sm:text-6xl">Más información</h2>
+      <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {FEDERATIONS.map((f) => (
+          <a href={f.url} target="_blank" rel="noopener" class="group rounded-2xl border border-ink-3 p-5 transition hover:border-accent">
+            <p class="text-xs uppercase tracking-widest text-mute">{f.scope}</p>
+            <p class="display mt-2 text-4xl group-hover:text-accent">{f.short} <span class="text-2xl">↗</span></p>
+            <p class="mt-1 text-sm text-mute">{f.name}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

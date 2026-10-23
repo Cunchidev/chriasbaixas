@@ -1,0 +1,66 @@
+---
+import "../styles/global.css";
+import Logo from "../components/Logo.astro";
+import { CLUB, FEDERATIONS } from "../config/club";
+import { href } from "../lib/url";
+interface Props { title?: string; description?: string }
+const { title, description = `${CLUB.name}: halterofilia olímpica en las ${CLUB.region}.` } = Astro.props;
+const path = Astro.url.pathname;
+const nav = [
+  { href: "/halterofilia", label: "Halterofilia" },
+  { href: "/puntos", label: "Puntos élite" },
+  { href: "/calculadoras", label: "Calculadoras" },
+  { href: "/calendario", label: "Calendario" },
+];
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0a0b" />
+    <title>{title ? `${title} · ${CLUB.name}` : CLUB.name}</title>
+    <link rel="icon" href={href("/favicon.svg")} type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen bg-ink text-chalk">
+    <header class="fixed inset-x-0 top-0 z-50 border-b border-ink-3/60 bg-ink/80 backdrop-blur">
+      <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-8">
+        <a href={href("/")} class="flex shrink-0 items-center gap-3" aria-label="Inicio">
+          <Logo size={40} text={false} />
+          <span class="display hidden text-xl sm:inline">{CLUB.short}</span>
+        </a>
+        <ul class="flex gap-3 overflow-x-auto text-[13px] font-medium sm:gap-7 sm:text-sm">
+          {nav.map((n) => (
+            <li class="shrink-0"><a href={href(n.href)} class:list={["transition hover:text-accent", path.includes(n.href) && "text-accent"]}>{n.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="border-t border-ink-3 px-4 py-14 text-sm text-mute sm:px-8">
+      <div class="mx-auto grid max-w-7xl gap-10 md:grid-cols-[auto_1fr]">
+        <div class="flex items-center gap-4">
+          <Logo size={88} />
+          <div>
+            <p class="display text-2xl text-chalk">{CLUB.name}</p>
+            <a href={CLUB.instagram} target="_blank" rel="noopener" class="hover:text-accent">{CLUB.instagramHandle}</a>
+            <a href={CLUB.venue.mapsUrl} target="_blank" rel="noopener" class="block hover:text-accent">{CLUB.venue.address}</a>
+            <a href={CLUB.partner.url} target="_blank" rel="noopener" class="block hover:text-accent">Entrenamos en {CLUB.partner.name} ↗</a>
+          </div>
+        </div>
+        <div>
+          <p class="mb-3 text-xs uppercase tracking-[.3em] text-accent">Federaciones</p>
+          <ul class="grid gap-2 sm:grid-cols-2">
+            {FEDERATIONS.map((f) => (
+              <li><a href={f.url} target="_blank" rel="noopener" class="hover:text-chalk"><span class="font-semibold text-chalk">{f.short}</span> · {f.name}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
