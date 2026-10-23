@@ -6,9 +6,14 @@ export const CLUB = {
   region: "Rías Baixas, Galicia",
   instagram: "https://www.instagram.com/halterofiliariasbaixas/",
   instagramHandle: "@halterofiliariasbaixas",
+  description: "Club de halterofilia olímpica en Pontevedra (Rías Baixas). Entrena arrancada y dos tiempos, calcula tus puntos élite RFEH y sigue el calendario de competiciones.",
   venue: {
     name: "La nave · Box004",
     address: "Polígono Industrial do Vao 2, nave 25, 36157 Pontevedra",
+    street: "Polígono Industrial do Vao 2, nave 25",
+    postalCode: "36157",
+    city: "Pontevedra",
+    province: "Pontevedra",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=Box004+Pol%C3%ADgono+O+Vao+2+nave+25+36157+Pontevedra",
   },
   partner: {

@@ -3,7 +3,7 @@ import Base from "../layouts/Base.astro";
 import PageHead from "../components/PageHead.astro";
 import ElitePoints from "../components/ElitePoints";
 ---
-<Base title="Puntos élite" description="Calculadora y tabla oficial de puntos élite de la RFEH.">
+<Base title="Tabla y calculadora de puntos élite RFEH" description="Calcula tus puntos élite con la tabla oficial de la RFEH (vigente desde agosto de 2026): tu categoría, tus puntos y cuántos kilos te faltan para el siguiente nivel.">
   <PageHead kicker="Tabla oficial RFEH" title="Puntos élite" lead="Mete tu peso y tu total: te decimos tus puntos, tu categoría y cuántos kilos te faltan para el siguiente nivel." />
   <section class="px-4 pb-24 sm:px-8">
     <div class="mx-auto max-w-7xl"><ElitePoints client:load /></div>

@@ -4,8 +4,34 @@ import Logo from "../components/Logo.astro";
 import { CLUB, FEDERATIONS } from "../config/club";
 import { href } from "../lib/url";
 interface Props { title?: string; description?: string }
-const { title, description = `${CLUB.name}: halterofilia olímpica en las ${CLUB.region}.` } = Astro.props;
+const { title, description = CLUB.description } = Astro.props;
 const path = Astro.url.pathname;
+const fullTitle = title ? `${title} · ${CLUB.name}` : `${CLUB.name} · Halterofilia en Pontevedra`;
+// Con `site` (lo pasa el workflow) las URLs son absolutas, como piden Google y las redes sociales
+const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
+const canonical = abs(path);
+const ogImage = abs(href("/og.png"));
+const homeUrl = abs(href("/"));
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SportsClub",
+  name: CLUB.name,
+  description: CLUB.description,
+  url: homeUrl,
+  logo: abs(href("/apple-touch-icon.png")),
+  image: ogImage,
+  sport: "Halterofilia",
+  sameAs: [CLUB.instagram],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: CLUB.venue.street,
+    postalCode: CLUB.venue.postalCode,
+    addressLocality: CLUB.venue.city,
+    addressRegion: "Galicia",
+    addressCountry: "ES",
+  },
+  memberOf: { "@type": "SportsOrganization", name: "Federación Galega de Halterofilia", url: "https://halterofilia.org/" },
+};
 const nav = [
   { href: "/halterofilia", label: "Halterofilia" },
   { href: "/puntos", label: "Puntos élite" },
@@ -20,8 +46,26 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0a0a0b" />
-    <title>{title ? `${title} · ${CLUB.name}` : CLUB.name}</title>
+    <title>{fullTitle}</title>
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href={href("/favicon.svg")} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={href("/apple-touch-icon.png")} />
+    <link rel="sitemap" href={href("/sitemap-index.xml")} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content={CLUB.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${CLUB.name}: levanta lo que creías imposible`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
